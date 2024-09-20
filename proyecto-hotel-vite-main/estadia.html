@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- Icons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+      rel="stylesheet" />
+    <!-- End Icons -->
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"></script>
+    <!-- End Bootstrap -->
+
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="./js/components/index.js " defer type="module"></script>
+    <script defer type="module" src="./js/estadia/index.js"></script>
+  </head>
+  <body>
+    <section id="sidebar" class="hide shadow-lg"></section>
+
+    <section id="content" class="reservas">
+      <nav id="navbar" class="blur fixed-top border-bottom"></nav>
+      <main>
+        <h3 class="mt-5 pt-3">Estadia</h3>
+        <div class="accordion" id="acordion-rooms"></div>
+
+        <!-- Modal -->
+        <div
+          class="modal fade modal-lg"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Registro N૰ <span id="modal-register"></span> Lista para agregar a minibar
+                  <span id="modal-room"></span>
+                </h1>
+
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="card shadow-sm">
+                      <div class="card-header">Consumibles</div>
+                      <div
+                        id="card-products"
+                        class="card-body table-consumbales overflow-y-scroll">
+                        <table id="table-products" class="table">
+                          <thead>
+                            <tr>
+                              <th>nombre</th>
+                              <th>precio</th>
+                              <th>accion</th>
+                            </tr>
+                          </thead>
+                          <tbody id="body-products"></tbody>
+                        </table>
+                      </div>
+
+                      <!-- <form
+                        id="form-amount-product"
+                        class="card-footer text-body-secondary"
+                      >
+                        <div class="col-md-12 pb-2">
+                          <label for="">cantidad para agregar a minibar</label>
+                          <input
+                            id="amountProduct"
+                            name="amountProduct"
+                            type="number"
+                            class="form-control border shadow-md"
+                          />
+                        </div>
+                      </form> -->
+                    </div>
+                  </div>
+
+                  <div class="col-md-4 shadow-lg rounded p-3 border">
+                    <form id="form-products" class="row">
+                      <h4>crear producto</h4>
+                      <div class="col-md-12 pb-2">
+                        <label for="">nombre</label>
+                        <input name="name" type="text" class="form-control" />
+                      </div>
+
+                      <div class="col-md-12 pb-2">
+                        <label for="">precio</label>
+                        <input
+                          name="price"
+                          type="number"
+                          class="form-control" />
+                      </div>
+
+                      <div class="col-md-12">
+                        <!-- Button trigger modal -->
+                        <button
+                          id="btn-add-product"
+                          type="button"
+                          class="btn btn-success w-100"
+                          style="
+                            --bs-btn-padding-y: 0.25rem;
+                            --bs-btn-padding-x: 0.5rem;
+                            --bs-btn-font-size: 0.75rem;
+                          ">
+                          crear
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--End Modal -->
+
+        <!-- Button trigger modal -->
+
+        <!-- Modal Factura -->
+        <div
+          class="modal fade modal-xl"
+          id="modalFactura"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Comprobante de pago registro N°
+                  <span id="modal-register-factura"></span>
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <!-- Datos cliente -->
+                  <div class="col-md-6">
+                    <div class="card shadow-sm mb-3">
+                      <div class="card-body table-consumbales">
+                        <h5>Cliente responsable</h5>
+                        <!-- se llena desde javascript -->
+                        <div class="datos-huesped"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Datos estadia -->
+                  <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm">
+                      <div class="card-body">
+                        <h5>Datos estadia</h5>
+                        <!--javascript -->
+                        <div class="datos-estadia"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-7">
+                    <div class="card shadow-sm">
+                      <div class="card-body">
+                        <h5>consumos y reserva</h5>
+                        <!--javascript -->
+                        <div class="datos-factura row"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-5">
+                    <div class="card shadow-sm">
+                      <div class="card-body">
+                        <h5>Abonos</h5>
+                        <!-- se llena desde javascript -->
+                        <div class="datos-abonos"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-facturar-pdf">
+                  generar pdf
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal">
+                  cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Footer -->
+      <footer class="bg-dark text-center text-white footer">
+
+      </footer>
+      <!-- Footer -->
+    </section>
+  </body>
+</html>

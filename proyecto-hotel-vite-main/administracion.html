@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administracion</title>
+    <script type="module" src="./js/privilegios/select.js"></script>
+    <script type="module" src="./js/privilegios/consolidado.js"></script>
+    <script type="module" src="./js/privilegios/usuarios.js"></script>
+    <script type="module" src="./js/privilegios/habitaciones.js"></script>
+
+    <!-- Icons -->
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+    <!-- End Icons -->
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="./js/components/index.js" type="module"></script>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- <script>
+        const token = localStorage.getItem("token")
+        if (!token) {
+            window.location.href = "login.html"
+        }
+    </script> -->
+    <section id="sidebar" class="hide shadow-lg "></section>
+    <section id="content">
+        <nav id="navbar" class="blur fixed-top border-bottom"></nav>
+        <main>
+            <section class="pb-5" style="margin-top: 50px;">
+                <h2>Funciones de Administración</h2>
+                <hr>
+                <div class="col-md-3">
+                    <label for="selectView" class="form-label">Ver</label>
+                    <select id="selectView" class="form-select" name="selectSearch">
+                        <option value="seleccione" selected>Seleccione...</option>
+                        <option value="habitaciones">Habitaciones</option>
+                        <option value="consolidado">Consolidado</option>
+                        <option value="usuarios">Usuarios</option>
+                    </select>
+                </div>
+            </section>
+        </main>
+        <main id="paginaConsolidado" style="display: none;">
+            <section class="pb-5" style="margin: 0;">
+                <h2 class="pt-5">Consolidado</h2>
+                <hr />
+                <div class="row g-md-2 p-3 shadow-sm rounded border">
+                    <div id="tabla" class="table-responsive p-5 bg-body border rounded ">
+                        <table class="table " id="dataTable" width="ml-auto" cellspacing="0" border="1">
+                            <thead>
+                                <tr>
+                                    <th>Mes</th>
+                                    <th>Reservas</th>
+                                    <th>Promedio días</th>
+                                    <th>Ingreso por reservas</th>
+                                    <th>Ingreso por productos</th>
+                                    <th>Ingreso total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-consolidado"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row g-md-2  p-3 shadow-sm rounded border">
+                    <div class="table-responsive p-5 bg-body border rounded ">
+                        <canvas id="ganancias" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <main id="paginaUsuarios" style="display: none;">
+            <section class="reservas pb-5">
+                <h2 class="pt-5">Usuarios</h2>
+                <hr />
+                <div class="table-responsive p-5 bg-body border rounded">
+                    <div class="row g-md-2 p-3 shadow-sm rounded border">
+                        <div class="col-md-3">
+                            <label for="exampleFormControlInput1" class="form-label">Consulta</label>
+                            <input type="text" class="form-control mb-1" id="searchItem" placeholder="Consulta" />
+                        </div>
+                        <div class="col-md-3">
+                            <label for="exampleFormControlInput1" class="form-label">Columna</label>
+                            <select id="selectedSearch" class="form-select" name="selectSearch">
+                                <option value="Todo" selected>Todo</option>
+                                <option value="Documento">Documento</option>
+                                <option value="Ficha">Ficha</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="exampleFormControlInput1" class="form-label">Estado</label>
+                            <select id="stateFilter" class="form-select" name="state">
+                                <option value="Todo" selected>Todo</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="col-md-12">
+                                <button id="btnBuscar" class="btn btn-success mt-3">
+                                    Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table" id="dataTable" width="ml-auto" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Documento</th>
+                                <th>Nombre</th>
+                                <th>Ficha</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Modificar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body-users"></tbody>
+                    </table>
+                </div>
+            </section>
+            <div class="modal fade" id="userDetailsModal" tabindex="-1" aria-labelledby="userDetailsModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                Modificar Usuario
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <br />
+                        <section class="reservas pt-5">
+                            <div class="container pb-5">
+                                <!-- Datos del Usuario -->
+                                <div class="col g-md-2">
+                                    <div class="col-md-3">
+                                        <label for="exampleFormControlInput1" class="form-label">
+                                            ID
+                                        </label>
+                                        <input type="text" class="form-control mb-1" id="userID" placeholder="ID"
+                                            disabled="true" />
+                                    </div>
+                                    <div class="row g-md-2">
+                                        <div class="col-md-3">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Documento
+                                            </label>
+                                            <input type="text" class="form-control mb-1" id="userDocument"
+                                                placeholder="Documento" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Nombre
+                                            </label>
+                                            <input type="text" class="form-control mb-1" id="userName"
+                                                placeholder="Nombre" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Ficha
+                                            </label>
+                                            <input type="text" class="form-control mb-1" id="userFicha"
+                                                placeholder="Ficha" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Correo
+                                            </label>
+                                            <input type="text" class="form-control mb-1" id="userEmail"
+                                                placeholder="Correo" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Teléfono
+                                            </label>
+                                            <input type="text" class="form-control mb-1" id="userPhone"
+                                                placeholder="Teléfono" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Dirección
+                                            </label>
+                                            <input type="text" class="form-control mb-1" id="userAddress"
+                                                placeholder="Dirección" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Rol
+                                            </label>
+                                            <input type="text" class="form-control mb-1" id="userRole"
+                                                placeholder="Rol" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="exampleFormControlInput1" class="form-label">
+                                                Estado
+                                            </label>
+                                            <select class="form-select" id="userState">
+                                                <option value="Activo">Activo</option>
+                                                <option value="Inactivo">Inactivo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button id="btnActualizarUsuario" class="btn btn-success mt-3">
+                                            Actualizar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4" id="mensajeActualizacion">
+                                        <p>Usuario actualizado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <main id="paginaHabitaciones" style="display: none;">
+            <section class="reservas pb-5">
+                <h2 class="pt-5">Habitaciones</h2>
+                <hr />
+                <div class="table-responsive p-5 bg-body border rounded">
+                    <div class="custom-card mx-auto mb-4 shadow-sm">
+                        <h3>Tarifas</h3>
+                        <div class="mb-3">
+                            <label for="tarifaEjecutivo" class="form-label">Tarifa Ejecutivo</label>
+                            <input type="text" class="form-control" id="tarifaEjecutivo">
+                        </div>
+                        <div class="mb-3">
+                            <label for="tarifaRegular" class="form-label">Tarifa Regular</label>
+                            <input type="text" class="form-control" id="tarifaRegular">
+                        </div>
+                        <div>
+                            <button class="btn btn-success" id="btnActualizarTarifas">
+                                Actualizar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="habitacionesContainer" class="table-responsive p-5 bg-body border rounded">
+                    <!-- Aquí se mostrarán las habitaciones -->
+                </div>
+            </section>
+            <div class="modal fade" id="modificarHabitacionModal" tabindex="-1"
+                aria-labelledby="modificarHabitacionModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modificarHabitacionModalLabel">Modificar Habitación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modificarHabitacionForm">
+                                <div class="mb-3">
+                                    <label for="inputUrlImagen" class="form-label">URL de la Imagen</label>
+                                    <input type="text" class="form-control" id="inputUrlImagen">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="inputDescripcion" class="form-label">Descripción</label>
+                                    <textarea class="form-control" id="inputDescripcion"></textarea>
+                                </div>
+                                <button type="button" class="btn btn-success" id="btnGuardarHabitacion">Guardar
+                                    Cambios</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+              <!-- Footer -->
+      <footer class="bg-dark text-center text-white footer">
+        
+      </footer>
+      <!-- Footer -->
+    </section>
+</body>
+
+</html>
